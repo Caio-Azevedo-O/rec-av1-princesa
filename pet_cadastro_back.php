@@ -1,6 +1,13 @@
 <?php
 require "conexao.php";
 
+session_start();
+
+if (!$_SESSION["logado"]) {
+    header("Location: login.php");
+    exit();
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome = $_POST["nome"];
     $raca = $_POST["raca"];
@@ -21,6 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(":foto", $foto);
         $stmt->bindParam(":cliente", $cliente);
         $stmt->execute();
+        header("Location: cadastro_cliente.php");
+        exit();
     } catch (PDOException $e) {
         $mensagem = "erro ao cadastrar o pet: " . $e->getMessage();
         header("Location: pet_cadastro.php?mensagem=$mensagem");

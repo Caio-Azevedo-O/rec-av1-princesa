@@ -10,9 +10,9 @@
     crossorigin="anonymous">
 </head>
 <body>
-    <form action="login_back.php" method="POST" class="bg-dark rounded-5">
+    <form action="login_back.php" method="POST" class="bg-dark m-5 p-3 rounded-4">
         <input class="form-control" type="text" name="usuario" id="usuario" placeholder="Usuário">
-        <input type="password" name="senha" id="senha" placeholder="Senha">
+        <input class="form-control" type="password" name="senha" id="senha" placeholder="Senha">
         <button type="submit" class="btn btn-success">Logar</button>
     </form>
 

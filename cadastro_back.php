@@ -1,5 +1,11 @@
 <?php
+session_start();
 require "conexao.php";
+
+if (!$_SESSION["logado"]) {
+    header("Location: login.php");
+    exit();
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome = $_POST["nome"];
@@ -17,6 +23,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(":email", $email);
         $stmt->bindParam(":endereco", $endereco);
         $stmt->execute();
+        header("Location: cadastro_cliente.php");
+        exit();
     } catch (PDOException $e) {
         $mensagem = "erro ao cadastrar o cliente: " . $e->getMessage();
         header("Location: cadastro_cliente.php?mensagem=$mensagem");

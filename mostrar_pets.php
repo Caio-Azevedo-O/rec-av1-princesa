@@ -1,6 +1,14 @@
 <?php
 require "conexao.php";
 session_start();
+
+if (!$_SESSION["logado"]) {
+    header("Location: login.php");
+    exit();
+}
+
+$mensagem = $_GET["mensagem"] ?? "";
+
 $id_cliente = $_GET["id_cliente"];
 $sql = "SELECT * FROM pets WHERE ID_cliente = :id";
 $stmt = $pdo->prepare($sql);
@@ -23,16 +31,23 @@ $pets = $stmt->fetchAll(PDO::FETCH_ASSOC);
     crossorigin="anonymous">
 </head>
 <body>
+    <a href="logoff.php" class="bn btn-danger">Sair</a>
     <a href="cadastro_cliente.php" class="btn btn-danger">Voltar</a>
+    <?php if ($mensagem != ""):?>
+        <p class="alert alert-warning m-2"><?= $mensagem;?></p>
+    <?php endif;?>
     <?php if ($pets):?>
         <?php foreach ($pets as $pet):?>
             <div class="card">
-                <img src="<?= $pet['foto'];?>" alt="pet" class="card-top-image">
+                <img width="300px" src="<?= $pet['foto'];?>" alt="pet" class="card-top-image">
                 <div class="card-body">
                     <h5 class="card-title"><?= $pet['nome_pet'];?></h5>
                     <p class="card-text"><?= $pet['raca'];?></p>
                     <p class="card-text"><?= $pet['idade'];?></p>
                     <p class="card-text"><?= $pet['tipo'];?></p>
+                    <p class="card-text"><?= $pet["observacoes"]?></p>
+                    <a href="editar_pet.php?id_cliente=<?=$id_cliente;?>&id_pet=<?= $pet["ID"];?>" class="btn btn-primary">Editar</a>
+                    <a href="excluir_pet_back.php?pet=<?= $pet["ID"];?>&id_cliente=<?= $id_cliente?>" class="btn btn-danger">Excluir</a>
                 </div>
             </div>
         <?php endforeach;?>

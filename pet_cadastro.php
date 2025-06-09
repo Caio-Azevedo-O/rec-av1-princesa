@@ -2,6 +2,11 @@
 require "conexao.php";
 session_start();
 $_SESSION["id_cliente"] = $_GET["id_cliente"];
+
+if (!$_SESSION["logado"]) {
+    header("Location: login.php");
+    exit();
+}
 ?>
 
 
@@ -17,6 +22,7 @@ $_SESSION["id_cliente"] = $_GET["id_cliente"];
     crossorigin="anonymous">
 </head>
 <body>
+    <a href="logoff.php" class="bn btn-danger">Sair</a>
     <a href="cadastro_cliente.php" class="btn btn-danger">Voltar</a>
     <form action="pet_cadastro_back.php" method="POST">
         <input type="text" class="form-control" name="nome" id="nome" placeholder="Nome">

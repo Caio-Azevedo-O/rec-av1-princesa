@@ -1,5 +1,11 @@
 <?php
+session_start();
 require "conexao.php";
+
+if (!$_SESSION["logado"]) {
+    header("Location: login.php");
+    exit();
+}
 
 $mensagem = $_GET["mensagem"] ?? "";
 
@@ -21,16 +27,17 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
     crossorigin="anonymous">
 </head>
 <body>
+    <a href="logoff.php" class="bn btn-danger">Sair</a>
     <?php if ($mensagem != ""):?>
-        <p class="alert alert-warning"><?= $mensagem;?></p>
+        <p class="alert alert-warning m-2"><?= $mensagem;?></p>
     <?php endif;?>
-    <form action="cadastro_back.php" method="POST" class="bg-dark rounded-5">
-        <input type="text" require name="nome" id="nome" placeholder="Nome">
-        <input type="text" require name="CPF" id="CPF" placeholder="CPF">
-        <input type="text" name="telefone" id="telefone" placeholder="Telefone">
-        <input type="text" name="email" id="email" placeholder="Email">
-        <input type="text" name="endereco" id="endereco" placeholder="Endereço">
-        <button type="submit" class="btn btn-success">Enviar</button>
+    <form action="cadastro_back.php" method="POST" class="bg-dark m-3 p-3 rounded-4">
+        <input class="form-control m-2" type="text" require name="nome" id="nome" placeholder="Nome">
+        <input class="form-control m-2" type="text" require name="CPF" id="CPF" placeholder="CPF">
+        <input class="form-control m-2" type="text" name="telefone" id="telefone" placeholder="Telefone">
+        <input class="form-control m-2" type="text" name="email" id="email" placeholder="Email">
+        <input class="form-control m-2" type="text" name="endereco" id="endereco" placeholder="Endereço">
+        <button type="submit" class="btn btn-success m-2">Enviar</button>
     </form>
     <?php foreach($clientes as $cliente):?>
     <div class="card">
@@ -39,8 +46,10 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <h6 class="card-text"><?= $cliente["CPF"];?></h6>
             <p class="card-text"><?= $cliente["telefone"];?></p>
             <p class="card-text"><?= $cliente["email"];?></p>
-            <a href="mostrar_pet.php?id_cliente=<?= $cliente["ID"];?>" class="card-link">Pets</a>
-            <a href="pet_cadastro.php?id_cliente=<?= $cliente['ID'];?>" class="btn btn-success">Cadastrar pet</a>
+            <a href="mostrar_pets.php?id_cliente=<?= $cliente["ID"];?>" class="card-link">Pets</a><br>
+            <a href="pet_cadastro.php?id_cliente=<?= $cliente['ID'];?>" class="btn btn-success">Cadastrar pet</a><br>
+            <a href="editar_cliente.php?id_cliente=<?= $cliente["ID"];?>" class="btn btn-primary">Editar Cliente</a>
+            <a href="excluir_cliente.php?id_cliente=<?= $cliente["ID"];?>" class="btn btn-danger">Excluir Cliente</a>
         </div>
     </div>
     <?php endforeach;?>
