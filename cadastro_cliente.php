@@ -9,8 +9,9 @@ if (!$_SESSION["logado"]) {
 
 $mensagem = $_GET["mensagem"] ?? "";
 
-$sql = "SELECT * FROM clientes";
+$sql = "SELECT * FROM clientes WHERE ID_usuario = :id";
 $stmt = $pdo->prepare($sql);
+$stmt->bindParam(":id", $_SESSION["ID_usuario"], PDO::PARAM_INT);
 $stmt->execute();
 $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>

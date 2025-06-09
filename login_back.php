@@ -2,10 +2,6 @@
 require "conexao.php";
 session_start();
 
-if (!$_SESSION["logado"]) {
-    header("Location: login.php");
-    exit();
-}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $usuario = $_POST["usuario"];
@@ -22,6 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($user) {
         if ($usuario == $user["usuario"] && $senha = $user["senha"]) {
             $_SESSION["logado"] = true;
+            $_SESSION["ID_usuario"] = $user["ID"];
             header("Location: cadastro_cliente.php");
             exit();
         }

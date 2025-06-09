@@ -15,13 +15,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $endereco = $_POST["endereco"];
 
     try {
-        $sql = "INSERT INTO clientes(nome_cliente, CPF, telefone, email, endereco) VALUES(:nome, :CPF, :telefone, :email, :endereco)";
+        $sql = "INSERT INTO clientes(nome_cliente, CPF, telefone, email, endereco, ID_usuario) VALUES(:nome, :CPF, :telefone, :email, :endereco, :id)";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(":nome", $nome);
         $stmt->bindParam(":CPF", $CPF);
         $stmt->bindParam(":telefone", $telefone);
         $stmt->bindParam(":email", $email);
         $stmt->bindParam(":endereco", $endereco);
+        $stmt->bindParam(":id", $_SESSION["ID_usuario"], PDO::PARAM_INT);
         $stmt->execute();
         header("Location: cadastro_cliente.php");
         exit();
